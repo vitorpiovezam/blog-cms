@@ -10,7 +10,8 @@ Install dependecies
 ```
 $ npm i
 ```
-Add some markdown files with below descripted nomenclature and hit start.
+Add some markdown files with below descripted nomenclature and deploy.
+Remember to fill your AWS configurations at ~/.aws/credentials
 ```
-npm run start
+sls deploy
 ```
