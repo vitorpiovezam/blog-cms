@@ -1,29 +1,15 @@
-import { Post } from '../src/models/post';
 import * as fs from 'fs';
-const removeMd = require('@azu/remove-markdown');
+import { Post } from '../src/models/post';
+import * as removeMd from '@azu/remove-markdown';
 
 export class PostService {
   posts: Post[] = [];
-  filesPath: string;
+  filesPath = 'src/posts';
 
-  constructor(filesPath: string) {
-    this.filesPath = filesPath;
-  }
-
-  private getSlug(slug: string): string {
-    const text =  (/[^#]*$/.exec(slug)[0]);
-    return text.slice(0, text.length-3);
-  }
-  
-  private getTitle (slug: string): string {
-    let text =  (/[^#]*$/.exec(slug)[0]);
-    let title = (text.slice(0, text.length-3)).replace(/-/g,' ');
-    title = title.charAt(0).toUpperCase() + title.slice(1)
-    return title;
-  } 
-  
-  private getType (slug: string): string {
-    return (/(['#])(?:(?=(\\?))\2.)+\1/.exec(slug)[0]).replace('#','').slice(0, -1);
+  private applyRegexAndVerifyIfExists(string: string, regex: RegExp): string {
+    const x = regex.exec(string);
+    if (x === null || x[0] === null) throw new Error('Cannot apply regex');
+    return x[0];
   }
 
   private getPreview(markdownFile: String) {
@@ -45,9 +31,9 @@ export class PostService {
       let markdown = fs.readFileSync(`${this.filesPath}/${filename}`, 'utf8');
       
       const post: Post = {
-        slug: this.getSlug(filename),
-        title: this.getTitle(filename),
-        type: this.getType(filename),
+        slug: this.applyRegexAndVerifyIfExists(filename, /[^#]*$/),
+        title: this.applyRegexAndVerifyIfExists(filename, /[^#]*$/),
+        type: this.applyRegexAndVerifyIfExists(filename, /(['#])(?:(?=(\\?))\2.)+\1/),
         post: markdown,
         textPreview: this.getPreview(markdown),
         postDate: new Date(filename.substring(0,10))

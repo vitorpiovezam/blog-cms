@@ -1,9 +1,7 @@
 import { PostService } from '../../lib/post.service';
 
-export const getAllPosts = async (event: any) => {
-  console.log(event)
-
-  const postService: PostService = new PostService('../src/posts');
+export const getAllPosts = async () => {
+  const postService: PostService = new PostService();
   const posts = await postService.getAllPosts();
 
   return JSON.stringify(posts);

@@ -7,7 +7,7 @@ export const getPostBySlug = async (event: any) => {
     throw new Error('slug is not defined')
   }
 
-  const postService: PostService = new PostService('../src/posts');
+  const postService: PostService = new PostService();
   const post = await postService.getPostBySlug(event.pathParameters.slug);
   
   return JSON.stringify(post);
