@@ -1,6 +1,6 @@
 import * as fs from 'fs';
-import { Post } from '../src/models/post';
-import * as removeMd from '@azu/remove-markdown';
+import { Post } from '../definitions/post';
+import * as removeMd from 'remove-markdown';
 
 export class PostService {
   posts: Post[] = [];
@@ -31,14 +31,14 @@ export class PostService {
       let markdown = fs.readFileSync(`${this.filesPath}/${filename}`, 'utf8');
       
       const post: Post = {
-        slug: this.applyRegexAndVerifyIfExists(filename, /[^#]*$/),
+        slug: this.applyRegexAndVerifyIfExists(filename, /[^#]*$/).toLowerCase(),
         title: this.applyRegexAndVerifyIfExists(filename, /[^#]*$/),
         type: this.applyRegexAndVerifyIfExists(filename, /(['#])(?:(?=(\\?))\2.)+\1/),
         post: markdown,
         textPreview: this.getPreview(markdown),
         postDate: new Date(filename.substring(0,10))
       }
-  
+      console.log(post.slug);
       posts.push(post);
     });
   
@@ -55,8 +55,8 @@ export class PostService {
     return pages[pageNumber + 1];
   }
 
-  public getPostBySlug(slug: string) {
+  public getPostBySlug(slug: string): Post | undefined {
     const posts: Post[] = this.getAllPosts();
-    return posts.filter((x: Post) => x.slug === slug);
+    return posts.filter((x: Post) => x.slug === slug)[0];
   }
 }

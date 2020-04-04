@@ -1,8 +1,11 @@
-import { PostService } from '../../lib/post.service';
+import { PostService } from '../services/post.service';
 
-export const getAllPosts = async () => {
+export const handler = async (_event: any, _context: any, _callback: any) => {
   const postService: PostService = new PostService();
   const posts = await postService.getAllPosts();
 
-  return JSON.stringify(posts);
+  _callback(null, {
+    statusCode: 200,
+    body: JSON.stringify(posts),
+  });
 };

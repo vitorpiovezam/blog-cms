@@ -10,11 +10,11 @@ plugins:
 
 functions:
   getAllPosts:
-    handler: src/handlers/getAllPosts.getAllPosts
+    handler: src/handlers/getAllPosts.handler
     events:
       - http: GET posts
 
   getPostBySlug:
-    handler: src/handlers/getPostBySlug.getPostBySlug
+    handler: src/handlers/getPostBySlug.handler
     events:
-      - http: GET posts/{slug}
+      - http: GET post/{slug}
