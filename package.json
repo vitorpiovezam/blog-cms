@@ -21,7 +21,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "remove-markdown": "^0.3.0",
     "serverless-domain-manager": "^3.3.0",
     "serverless-layers": "^1.4.4",
