@@ -1,16 +1,241 @@
-# Testes E2E automatizados com Cypress.io
+<p align="middle" style="padding: 20px 0">
+  <img width="80%" src="https://i.imgur.com/hAh0v6R.png"></img><br>
+</p>
 
-## Prefácio
+## Preface
 
-Num blog de um entusiasta de testes eu li, "Better world by better software".
-Essa frase ficou na minha cabeça. 🤔
+On a blog of a test enthusiast I read, “Better world by better software” 🤔<br>
+That sentence got in my head.
 
-O mundo que vivemos pede cada vez mais agilidade, muitas empresas - na maior parte startups - tem a acelaração da informação como modelo de negócio. Seja com de processos bancários nas fintechs, centralização e extração de dados nas grandes plataformas ou análises de dados nos mais diversos segmentos.
+The world we live in calls for more and more agility. Many companies - mostly startups - have accelerating information as a business model. Like banking processes in fintechs or centralization and extraction of data on large platforms or data analysis in the most diverse segments.
 
-Garantia de qualidade é uma das partes mais importantes na vida de um software, e hoje com com os processos ageis de desenvolvimento testes manuais são muito custosos e nem sempre assertivos. Desenvolver testes automatizados é hoje quesito de sobrevivencia num mercado cada vez mais complexo e exigente, além de serem um diferencial para profissionais na área.
+Quality assurance is one of the most important parts in the life of a software, and today with agels development, processes manual tests are very costly and not always assertive.
 
-## Introdução
+Developing automated testing is now a question of survival in an increasingly complex and demanding market, besides being a plus for professional developers.
 
-*Se você já tem familiaridade com testes end to end e/ou cypress pode pular essa parte.*
+In the last 5 months, I have developed tests for 35% of the features of the Cubo digital platform, where I work as a fullstack, this post is based on my experiences and problems in these implementations.
 
-Testes E2E (end-to-end) 
+## Introduction
+
+End-to-end tests (e2e) are tests in which we perform complete flows in the end-user view of the product.
+
+Through code, buttons will be clicked, forms filled out and other interactions with your platform, validating that each step of a stream is properly functioning. If you have never written tests, an important step is to think like the user.
+
+By placing yourself as an end user by defining the actions that you will perform on that screen or stream, you gain even more visibility into what your product really is. Its purpose.
+
+## What is Cypress
+
+Cypress is an amazing tool, an entire framework written Javascript that runs tests within the browser. No need to install drivers such as Selenium. Bring libs like jQuery and Moment into the test suite if you want to use it.
+
+Provides a series of very efficient tools for designing and debugging tests. 
+Easy DOM handling, allowing you to save videos of the tests you've done, TypeScript support, and some other things make it a framework with low learning curve.
+
+## Thinking like a test 🧠
+
+Let's say you have a vacancy platform where applicants apply to pre-registered opportunities, the flow to a candidate would be
+
+1. Sign up
+2. Search jobs
+3. Apply to one or more jobs
+
+Now that we have our flow well defined, we can move that into code.
+
+## DOM Elements
+
+JS is the web language, runs inside the browser, and can be at the core of the application as Angular and React or in smaller interactions on a PHP platform.
+
+To write a simple test it is essential to have the basic notion of **selectors, actions and values**.
+
+The actions of javascript on the elements on the screen is a long theme. In a simplistic way I will pass the basics necessary to fill in some fields and click on buttons.
+
+If you do not know javascript or do not know how it handles HTML elements, it is possible to learn quickly there in [W3](https://www.w3schools.com/w3js/w3js_selectors.asp).
+
+## Testing com Cypress
+
+In the practical example we will do, is the registration and login test, with filling in two fields on each screen.
+
+For example, we will use a website made to practice registration tests and simple login.
+Our test roadmap is:
+
+1. Sign up
+2. Login
+
+### Creating a Node project
+
+From any platform, having [Node] (https://nodejs.org/) and [NPM] (https://www.npmjs.com/) properly installed, we simply use the package manager to start a project and Install Cypress. By running a single command of your bash 🤙.
+
+But first we need to create a Node project, then install Cypress and add a npm script in package.json, for Cypress to run within the project.
+
+<small>👨‍💻to run in your bash</small>
+
+```shell
+mkdir testing-cypress
+cd testing-cypress
+npm init
+```
+
+Complete the NPM wizard and we will have a new folder, with a project ready to start.
+
+### Add Cypress
+
+In the root folder of your project install Cypress with NPM
+
+``` shell
+npm install cypress@3.8.2 --save-dev
+```
+
+After NPM completes the installation, we will have a new folder, with a project ready to start.
+
+Go to the file *package.json* that was generated by ```npm init``` and insert a new record in “scripts”, leaving as in json below.
+
+```JSON
+{
+  "name": "foo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test:e2e": "cypress open", // essa linha o/
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cypress": "^3.8.2"
+  }
+}
+```
+
+Once this is done, our NPM script is created and we can already open Cypress with its graphical interface. Opening for the first time, it will create a default folder structure. Feel free to take a little exploration.
+
+Open Cypress and generate the folders by running the command in the root folder of the project.
+
+<small>👨‍💻to run in your bash</small>
+
+```shell
+npm run test:e2e
+```
+
+In this way Cypress will automatically configure itself and generate the following folder structure
+
+```shell
+cypress
+├── fixtures # 👈In this folder are files, such as mocks or images
+│   └── example.json
+├── integration # 👈Our tests place
+│   └── examples # 👈Excelent samples to study
+│       ├── actions.spec.js
+│       ├── aliasing.spec.js
+│       ├── assertions.spec.js
+│       ├── connectors.spec.js
+│       ├── cookies.spec.js
+│       ├── cypress_api.spec.js
+│       ├── files.spec.js
+│       ├── local_storage.spec.js
+│       ├── location.spec.js
+│       ├── misc.spec.js
+│       ├── navigation.spec.js
+│       ├── network_requests.spec.js
+│       ├── querying.spec.js
+│       ├── spies_stubs_clocks.spec.js
+│       ├── traversal.spec.js
+│       ├── utilities.spec.js
+│       ├── viewport.spec.js
+│       ├── waiting.spec.js
+│       └── window.spec.js
+├── plugins # 👈Where live plugins that we can add or create
+│   └── index.js
+└── support # 👈Where we can create global functions, to keep dry.
+    ├── commands.js
+    └── index.js
+
+5 directories, 23 files
+```
+
+The command will also open the Cypress graphical interface, where we can see the created tests and watch them run, even with auto reload.
+
+<p align="middle" style="padding: 20px 0">
+<img width="80%" src="https://i.imgur.com/voDvx4s.png"></img><br>
+<small>Cypress welcome screen</small>
+</p>
+
+### Creating sign-up and sign-in tests
+
+Create, manually or with the code below, a new javascript file in the ```cypress/integrations``` folder and open it in a text editor. Since it is a registration test, we can call it ```login.spec.js```.
+
+<small>👨‍💻to run in your bash (at project root folder)</small>
+
+```shell
+cd cypress/integration/
+touch login.spec.js
+```
+
+Lets see the manual test:
+<p align="center">
+<img width="80%" src="https://media.giphy.com/media/gdfoTj96xjmfky8NPP/giphy.gif">
+</p>
+
+#### Code
+
+**login.spec.js**
+
+```javascript
+// Page of below gif
+const url = 'http://thedemosite.co.uk/addauser.php'
+
+// Creating account with random credentials
+const username = String(Math.ceil(Math.random()*1000000));
+const password = String(Math.ceil(Math.random()*1000000));
+
+context('User sign-up', () => {
+  before(() => {
+    cy.visit(url)
+  });
+
+  it('Realizar cadastro de usuário', () => {
+
+    // Form fields fullfilment
+    cy.get('input[name="username"').type(username);
+    cy.get('input[name="password"').type(password);
+
+    // Press submit button
+    cy.get('input[name="FormsButton2"').click();
+
+    /*  To find out if the account was actually created
+    we need to see what success message the site returns
+    in the case of this site, two elements are filled in
+    with the account data created, we will validate whether the values
+    of these elements, correspond to our
+    name and password */
+    cy.get('blockquote').eq(3).should('contain', username);
+    cy.get('blockquote').eq(3).should('contain', password);  
+  });
+
+  it('Log-in with register previusly created', () => {
+    cy.get('a[href="login.php"').first().click();
+
+    // Form fields fullfilment
+    cy.get('input[name="username"').type(username);
+    cy.get('input[name="password"').type(password);
+
+    // Press submit button
+    cy.get('input[name="FormsButton2"').click();
+
+    // Verifiend success output
+    cy.get('blockquote').first().should('contain.text', '**Successful Login**');
+  });
+});
+```
+
+Now start Cypress in the project with ```npm run test:e2e``` and click on your ```login.spec.js``` test.
+<p align="center">
+<img width="80%" src="https://media.giphy.com/media/lqXlqoZ8fIJQIphhuI/giphy.gif">
+</p>
+
+## Conclusion
+
+As Cypress's own website says, 'the web has evolved, and finally the tests too'. It is an efficient, modern and lightweight framework in the way of today's web.
+
+I hope I have passed how easy it is to carry out tests, still obscure practice for many devs. I want to post deeper into my blog, from uploading files to more advanced asynchrony issues and common problems.
+
+Thank you 😁.
