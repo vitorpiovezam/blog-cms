@@ -6,6 +6,7 @@
   "scripts": {
     "start": "ts-node index.ts",
     "start:dev": "nodemon --watch posts/ index.ts",
+    "deploy": "aws s3 sync ./src/posts s3://vitorpiovezam.dev-posts && sls deploy",
     "post": "git add .;git commit -m 'post';git push origin prod",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
