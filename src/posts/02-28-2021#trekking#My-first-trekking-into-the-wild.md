@@ -46,7 +46,7 @@ When I arrived in the island, I imediatelly started my journey to Dois Rios.
 <br>
 
 <p align="middle">
-<iframe height='405' width='590' frameborder='0' allowtransparency='true' scrolling='no' src='https://www.strava.com/activities/4799661287/embed/d65ea1dbe0beac65baaf2a814bebde217a11064b'></iframe>
+<iframe height='405' width='350' frameborder='0' allowtransparency='true' scrolling='no' src='https://www.strava.com/activities/4799661287/embed/d65ea1dbe0beac65baaf2a814bebde217a11064b'></iframe>
 </p>
 Climbing the 780 meters of altitude on the first trail, I started to sweat too much, due to the 15kg backpack I carried on my back, containing all the camping material, some food and 4l of water.
 <br>
@@ -138,10 +138,10 @@ I spend a lot of energy climbing those rocks.
 The GPS tracking shows the place I losted the trail.
 <br>
 <p align="middle">
-  <iframe height='405' width='590' frameborder='0' allowtransparency='true' scrolling='no' src='https://www.strava.com/activities/4799659624/embed/df00f1062706b94d58ac549e10b5a7df4556cd81'></iframe>
+  <iframe height='405' width='350' frameborder='0' allowtransparency='true' scrolling='no' src='https://www.strava.com/activities/4799659624/embed/df00f1062706b94d58ac549e10b5a7df4556cd81'></iframe>
 </p>
 
-## Stage 3, backing
+## Stage 3, the return
 
 With no water, drinking just in some points of fresh water on the trail, this was the more hard segment.
 
