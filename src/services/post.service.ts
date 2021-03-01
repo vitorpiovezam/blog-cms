@@ -29,20 +29,21 @@ export class PostService {
     
     files.forEach((filename)=> {
       let markdown = fs.readFileSync(`${this.filesPath}/${filename}`, 'utf8');
-      
+      console.log(filename)
       const post: Post = {
-        slug: this.applyRegexAndVerifyIfExists(filename, /[^#]*$/).toLowerCase(),
-        title: this.applyRegexAndVerifyIfExists(filename, /[^#]*$/),
-        type: this.applyRegexAndVerifyIfExists(filename, /(['#])(?:(?=(\\?))\2.)+\1/),
+        slug: this.applyRegexAndVerifyIfExists(filename, /[^#]*$/).toLocaleLowerCase(),
+        title: this.applyRegexAndVerifyIfExists(filename, /[^#]*$/).replace(/-/g, ' ')
+        .slice(0, -3),
+        type: this.applyRegexAndVerifyIfExists(filename, /(['#])(?:(?=(\\?))\2.)+\1/).replace(/#/g, ' '),
         post: markdown,
         textPreview: this.getPreview(markdown),
         postDate: new Date(filename.substring(0,10))
       }
-      console.log(post.slug);
+      console.log(post.postDate);
       posts.push(post);
     });
   
-    return posts.sort((a,b) => b.postDate.getTime() - a.postDate.getTime());
+    return posts.sort((a,b) => a.postDate.getTime() - b.postDate.getTime()).reverse();
   }
 
   public getPostsPerPage(pageSize: number, pageNumber: number) {
