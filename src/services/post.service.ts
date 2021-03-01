@@ -1,10 +1,14 @@
 import * as fs from 'fs';
 import { Post } from '../definitions/post';
-import * as removeMd from 'remove-markdown';
-
+var removeMd = require('@azu/remove-markdown');
 export class PostService {
   posts: Post[] = [];
   filesPath = 'src/posts';
+
+  private async refreshPostsFromBucket() {
+    const exec = require('child_process').exec;
+    await exec(`aws s3 sync s3://vitorpiovezam.dev-posts ${this.filesPath}`);
+  }
 
   private applyRegexAndVerifyIfExists(string: string, regex: RegExp): string {
     const x = regex.exec(string);
@@ -20,13 +24,14 @@ export class PostService {
       gfm: true
     }).substring(0, 150) + '...';
 
-  return textPreview;
+    return textPreview;
   }
 
-  public getAllPosts() {
+  public async getAllPosts() {
+    await this.refreshPostsFromBucket();
     const posts = [] as Post[];
     const files = fs.readdirSync(this.filesPath);
-    
+
     files.forEach((filename)=> {
       let markdown = fs.readFileSync(`${this.filesPath}/${filename}`, 'utf8');
       console.log(filename)
@@ -46,8 +51,8 @@ export class PostService {
     return posts.sort((a,b) => a.postDate.getTime() - b.postDate.getTime()).reverse();
   }
 
-  public getPostsPerPage(pageSize: number, pageNumber: number) {
-    const posts: Post[] = this.getAllPosts();
+  public async getPostsPerPage(pageSize: number, pageNumber: number) {
+    const posts: Post[] = await this.getAllPosts();
     const pages = [] as any[];
 
     while (posts.length > 0)
@@ -56,8 +61,8 @@ export class PostService {
     return pages[pageNumber + 1];
   }
 
-  public getPostBySlug(slug: string): Post | undefined {
-    const posts: Post[] = this.getAllPosts();
+  public async getPostBySlug(slug: string): Promise<Post | undefined> {
+    const posts: Post[] = await this.getAllPosts();
     return posts.filter((x: Post) => x.slug === slug)[0];
   }
 }
