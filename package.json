@@ -28,10 +28,10 @@
     "serverless-layers": "^1.4.4",
     "serverless-offline": "^5.12.1",
     "serverless-webpack": "^5.3.1",
-    "ts-loader": "^6.2.1",
+    "ts-loader": "^9.4.2",
     "ts-node": "^8.3.0",
     "typescript": "^3.8.3",
-    "webpack": "^4.41.5",
+    "webpack": "^5.75.0",
     "webpack-node-externals": "^1.7.2"
   },
   "devDependencies": {
